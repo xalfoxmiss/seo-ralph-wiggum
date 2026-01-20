@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "🕵️  Iniciando Motor Ralph..."
-echo "⚠️  Asegúrate de haber ejecutado 'claude init' y tener Git configurado."
+echo "⚠️  Asegúrate de haber ejecutado 'claude init'."
 echo "¿Cuántos artículos quieres generar?"
 read iterations
 

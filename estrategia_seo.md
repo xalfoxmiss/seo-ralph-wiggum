@@ -7,4 +7,4 @@
    - Lee archivos existentes.
    - Añade enlaces DESDE el nuevo HACIA los antiguos.
    - **IMPORTANTE:** Edita un artículo antiguo para enlazar al nuevo.
-5. **Cierre:** Commit en Git.
+5. **Cierre:** Actualiza el archivo `data/progress.txt` con el progreso.
