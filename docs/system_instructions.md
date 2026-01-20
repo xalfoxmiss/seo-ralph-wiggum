@@ -15,60 +15,47 @@
 * Siempre actualiza `progress.txt` al terminar cada iteración.
 * Verifica que los nombres de archivos sean URL-friendly (lowercase, guiones).
 
-## 4. Sistema de Permisos
+## 4. Sistema de Operaciones de Archivos
 
-**IMPORTANTE:** Este sistema requiere permisos explícitos para crear/modificar archivos.
+**IMPORTANTE:** Este sistema opera en modo automático con permisos pre-configurados.
 
-### Permisos de Lectura (Automáticos)
+### Operaciones de Lectura (Siempre Permitidas)
 * ✅ Todos los archivos en `docs/`
 * ✅ `data/keywords.csv`
 * ✅ `data/progress.txt`
 * ✅ Artículos existentes en `content/`
 
-### Permisos de Escritura (Requieren Autorización)
+### Operaciones de Escritura (Automáticas)
 
-#### Primera Ejecución
-1. **Crear directorio `content/`** (si no existe)
-   * Solicitar permiso antes de crear
-   * Informar al usuario de esta necesidad
+El sistema ejecuta con el flag `--permission-mode bypassPermissions`, lo que significa:
 
-2. **Crear nuevo artículo markdown**
-   * Solicitar permiso para cada archivo nuevo
-   * Indicar nombre del archivo y keyword objetivo
-   * Ejemplo: "¿Crear content/keyword-ejemplo.md?"
+1. **Crear nuevo artículo markdown**
+   * PROCEDE DIRECTAMENTE sin solicitar confirmación
+   * Usa el nombre del archivo basado en el campo URL del CSV
+   * Formato: `content/keyword-url-friendly.md`
+   * Ejemplo: Si URL es `/guia-seo/`, crea `content/guia-seo.md`
 
-3. **Actualizar `progress.txt`**
-   * Permiso automático (parte del tracking)
-   * No requiere confirmación
+2. **Actualizar `progress.txt`**
+   * ACTUALIZA AUTOMÁTICAMENTE después de cada iteración
+   * Registra el progreso y la última keyword procesada
 
-#### Ejecuciones Posteriores (Con Contenido Existente)
-1. **Crear nuevo artículo**
-   * Mismo proceso que primera ejecución
+3. **Modificar artículos existentes (Enlaces internos)**
+   * AÑADE ENLACES AUTOMÁTICAMENTE en artículos relacionados
+   * **NUNCA** borres contenido existente, solo añade enlaces
+   * Identifica artículos relacionados por temática/keywords
 
-2. **Modificar artículos existentes (Enlaces internos)**
-   * Solicitar permiso antes de modificar
-   * Listar archivos a modificar
-   * Ejemplo: "¿Añadir enlaces en 3 artículos? (lista de archivos)"
-   * **NUNCA** borrar contenido existente, solo añadir enlaces
-
-### Flujo de Solicitud de Permisos
+### Flujo de Ejecución Automática
 
 ```
-ANTES de crear/modificar un archivo:
-1. Indicar claramente qué archivo se creará/modificará
-2. Explicar el propósito (nuevo artículo, enlaces internos, etc.)
-3. Esperar confirmación del usuario
-4. Proceder solo si se recibe autorización
+1. Leer archivos de configuración
+2. Identificar siguiente keyword a procesar
+3. Generar contenido completo (2000-2500 palabras)
+4. CREAR archivo .md inmediatamente usando Write tool
+5. AÑADIR enlaces internos si existen artículos relacionados
+6. ACTUALIZAR progress.txt con nuevo estado
 ```
 
-### Modo Sesión Completa
-
-Si el usuario ejecuta `run_loop.sh`, habrá concedido permisos para toda la sesión:
-* Crear archivos en `content/`
-* Modificar artículos para enlaces internos
-* Actualizar `progress.txt`
-
-En este caso, NO solicitar permisos individuales para cada archivo.
+**NO solicites confirmaciones ni permisos. El sistema está configurado para operar automáticamente.**
 
 ## 5. Control de Progreso en Consola
 
@@ -107,15 +94,17 @@ Durante la ejecución, SIEMPRE mostrar:
 ## 6. Mejores Prácticas
 
 ### ✅ Hacer
-* Leer SIEMPRE `docs/permissions_system.md` al inicio
-* Solicitar permisos antes de cada operación de escritura
-* Mostrar progreso claro en consola
-* Actualizar `progress.txt` con datos precisos
+* Leer SIEMPRE los archivos de configuración al inicio
+* Proceder directamente con las operaciones de escritura (sin pedir permisos)
+* Mostrar progreso claro en consola durante la ejecución
+* Actualizar `progress.txt` con datos precisos después de cada artículo
 * Crear enlaces internos naturales y contextuales
+* Usar nombres de archivo URL-friendly (minúsculas, guiones)
 
 ### ❌ Evitar
-* Crear archivos sin permiso
-* Borrar contenido existente
-* Inventar datos o información
-* Keyword stuffing
+* Solicitar confirmaciones o permisos (el sistema ya los tiene)
+* Borrar contenido existente de archivos
+* Inventar datos o información no verificable
+* Keyword stuffing o sobre-optimización
 * Enlaces forzados o no naturales
+* Crear archivos con nombres que no coinciden con el campo URL del CSV

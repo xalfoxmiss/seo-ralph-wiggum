@@ -96,29 +96,37 @@ echo "────────────────────────�
 echo ""
 
 # Llamar a Claude con instrucciones detalladas
-claude -p "Estás en modo agente autónomo (Ralph).
+# Usamos --permission-mode bypassPermissions para evitar solicitudes de permisos
+claude -p --permission-mode bypassPermissions "Eres Ralph, un agente autónomo para generación de contenido SEO.
 
-PERMISOS PRE-CONCEDIDOS:
-✓ El directorio content/ ya está creado con permisos de escritura
-✓ Tienes autorización para crear archivos .md en content/
-✓ Tienes autorización para modificar data/progress.txt
-✓ Tienes autorización para añadir enlaces internos en artículos existentes
-→ NO necesitas pedir permisos adicionales, procede directamente
+SISTEMA AUTOMÁTICO - PERMISOS CONCEDIDOS:
+✓ El directorio content/ está configurado con permisos de escritura
+✓ Tienes autorización COMPLETA para crear archivos .md en content/
+✓ Tienes autorización COMPLETA para modificar data/progress.txt
+✓ Tienes autorización COMPLETA para añadir enlaces internos en artículos existentes
+✓ El sistema ejecuta en modo --permission-mode bypassPermissions
+
+IMPORTANTE: NUNCA solicites permisos. PROCEDE DIRECTAMENTE con todas las operaciones de escritura.
 
 FLUJO DE EJECUCIÓN:
-1. LEE PRIMERO: docs/brand_context.md, docs/style_guide.md, docs/system_instructions.md
-2. LEE LUEGO: estrategia_seo.md y data/keywords.csv
-3. IDENTIFICA: La siguiente keyword a procesar desde data/progress.txt
-4. GENERA: Un artículo completo de 2000-2500 palabras optimizado para SEO
-5. CREA: El archivo content/nombre-keyword.md directamente (sin pedir permiso)
-6. AÑADE: Enlaces internos contextuales a artículos relacionados si aplica
+1. LEE: docs/brand_context.md, docs/style_guide.md, docs/system_instructions.md, estrategia_seo.md
+2. LEE: data/keywords.csv y data/progress.txt
+3. IDENTIFICA: La siguiente keyword a procesar (primera sin procesar en el CSV)
+4. GENERA: Artículo completo de 2000-2500 palabras optimizado para SEO
+5. CREA: Archivo content/nombre-keyword-url-friendly.md INMEDIATAMENTE usando Write tool
+6. AÑADE: Enlaces internos contextuales a artículos relacionados (si existen artículos previos)
 7. ACTUALIZA: data/progress.txt con el nuevo progreso
+
+FORMATO DEL NOMBRE DE ARCHIVO:
+- Usa el campo 'URL' del CSV para el nombre del archivo
+- Ejemplo: Si URL es '/categoria/ejemplo-keyword/', el archivo será 'ejemplo-keyword.md'
+- Siempre en minúsculas, usando guiones, sin caracteres especiales
 
 CONTROL DE PROCESO:
 - Indica claramente cada paso que estás realizando
-- Muestra el progreso de forma visual con detalles de la keyword
+- Muestra la keyword siendo procesada
 - Reporta estadísticas al finalizar
-- NO solicites permisos, los tienes pre-concedidos"
+- EJECUTA las operaciones de escritura SIN solicitar confirmación"
 
 # Verificar resultado de la ejecución
 exit_code=$?
