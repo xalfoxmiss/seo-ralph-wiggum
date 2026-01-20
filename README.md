@@ -1,5 +1,8 @@
 # SEO Ralph Cluster - Guía de Ejecución
 
+<img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/79275c55-781a-41c6-9f6f-f4980149a9c1" />
+
+
 ## Cómo Ejecutar el Sistema
 
 ### Configuración Inicial
