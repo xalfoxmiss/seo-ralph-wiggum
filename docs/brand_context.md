@@ -1,41 +1,55 @@
-# 🚗 Contexto del Proyecto: Yofindo.com
+# 🏢 Contexto del Proyecto: [Tu Marca]
 
 ## 1. Quiénes Somos (Identidad)
-Yofindo.com es un e-commerce líder en venta de neumáticos online en España. Nos diferenciamos por eliminar la complejidad de comprar ruedas: ofrecemos un catálogo inmenso, precios muy competitivos (mucho más baratos que el taller oficial) y, lo más importante, cerramos el círculo con el montaje.
+[Tu Marca] es un e-commerce especializado en [tu sector/productos] en [tu región/país]. Nos diferenciamos por [tu propuesta de valor única].
 
-**Nuestro lema implícito:** "Comprar neumáticos online nunca fue tan fácil y seguro".
+**Nuestro lema implícito:** "[Tu slogan o mensaje principal]".
 
 ## 2. Propuesta de Valor Única (USPs)
 El agente debe resaltar estos puntos de venta en los artículos siempre que sea relevante:
-* **Envío GRATIS:** Siempre, sin letra pequeña. En 24/48h.
-* **Red de Talleres:** Tenemos más de 800 talleres concertados en toda España. El cliente puede mandar los neumáticos directamente al taller y solo ir a montarlos.
-* **Todo incluido:** Opción de pagar el neumático + montaje en la web (precio cerrado).
-* **Garantía:** Productos 100% nuevos y garantizados (nada de segunda mano ni fechas de fabricación antiguas).
+* **Beneficio 1:** Descripción del beneficio (ejemplo: envío gratis, garantía extendida, etc.)
+* **Beneficio 2:** Descripción del beneficio (ejemplo: red de distribuidores, servicio postventa, etc.)
+* **Beneficio 3:** Descripción del beneficio (ejemplo: precio competitivo, facilidad de compra, etc.)
+* **Beneficio 4:** Descripción del beneficio (ejemplo: productos certificados, calidad garantizada, etc.)
 
 ## 3. Target Audience (Buyer Persona)
 
-### A. El Conductor Ahorrador (Prioridad Alta)
-* **Perfil:** Tiene un coche utilitario o familiar (Seat, Renault, Peugeot). No le apasionan los coches, solo quiere pasar la ITV y viajar seguro sin gastar una fortuna.
-* **Dolor:** Le da miedo que el mecánico le cobre de más. Busca "neumáticos baratos" pero le preocupa la seguridad (marcas como Hankook, Kumho, o budget brands fiables).
+### A. Persona Principal (Prioridad Alta)
+* **Perfil:** Descripción demográfica y psicográfica de tu cliente ideal.
+* **Dolor:** Principales problemas o necesidades que tiene este segmento.
+* **Motivación:** Qué busca cuando compra tus productos/servicios.
 
-### B. El Conductor Premium Inteligente
-* **Perfil:** Tiene un coche de gama media-alta (Audi, BMW, Mercedes). Quiere Michelin, Continental o Pirelli, pero se niega a pagar los precios inflados del concesionario oficial.
-* **Dolor:** Quiere la máxima calidad y tecnología, pero valora comprarla al mejor precio de mercado.
+### B. Persona Secundaria
+* **Perfil:** Descripción del segundo segmento más importante.
+* **Dolor:** Principales problemas o necesidades de este segmento.
+* **Motivación:** Qué valora de tu oferta.
 
 ## 4. Tono de Voz y Estilo
-* **Experto y Resolutivo:** Hablamos con autoridad sobre mecánica y seguridad vial, pero sin tecnicismos innecesarios. Explicamos qué es el "aquaplaning" o el "índice de carga" de forma que cualquiera lo entienda.
-* **Local (España):** Es CRÍTICO mencionar normativas locales.
-    * Hacer referencia a la **DGT** (Dirección General de Tráfico).
-    * Hacer referencia a la **ITV** (Inspección Técnica de Vehículos) y sus requisitos de profundidad del dibujo (1.6mm).
-    * Usar terminología de aquí: "Ruedas", "Neumáticos", "Coche", "Pegatina ambiental", "Gasolinera". (Evitar "Llantas" para referirse a la goma, usar "Cubierta" o "Neumático").
+* **[Atributo 1]:** Descripción de cómo debe ser el tono (ejemplo: experto y resolutivo, cercano y amigable, técnico y preciso).
+* **[Atributo 2 - Localización]:** Consideraciones locales importantes:
+    * Normativas o regulaciones relevantes de tu sector
+    * Terminología específica de tu región/país
+    * Referencias culturales o contextuales importantes
+    * Aspectos legales a mencionar cuando sea relevante
 
 ## 5. Temáticas Clave y Ángulos SEO
-* **Comparativas:** Budget vs Premium.
-* **Seguridad:** Frenada en mojado, etiquetas europeas.
-* **Estacionalidad:** Neumáticos de verano, invierno y (muy importante) **All Season / 4 Estaciones** (un mercado en auge en España que debemos empujar).
-* **Mantenimiento:** Presión, equilibrado, paralelo/alineación.
+* **Temática 1:** Descripción de temas importantes para tu contenido
+* **Temática 2:** Ángulos de contenido relevantes
+* **Temática 3:** Tendencias o estacionalidades a considerar
+* **Temática 4:** Aspectos técnicos o educativos importantes
 
 ## 6. Directrices de Marca para la IA
-* Nunca recomiendes neumáticos de segunda mano.
-* Siempre cierra los artículos recordando que en Yofindo pueden introducir su medida y ver precios al instante.
-* Si hablas de montaje, recuerda que pueden elegir el taller más cercano a su código postal durante la compra.
+* Directriz 1: Qué nunca debe hacer o recomendar
+* Directriz 2: Cómo debe cerrar los artículos o CTAs
+* Directriz 3: Aspectos específicos a mencionar o evitar
+* Directriz 4: Cualquier otra consideración importante de marca
+
+---
+
+## Instrucciones de Uso
+
+Reemplaza todos los textos entre corchetes `[...]` con la información específica de tu marca:
+- `[Tu Marca]`: Nombre de tu empresa o marca
+- `[tu sector/productos]`: Tu industria o categoría de productos
+- `[tu región/país]`: Tu mercado geográfico principal
+- Completa cada sección con información real de tu negocio

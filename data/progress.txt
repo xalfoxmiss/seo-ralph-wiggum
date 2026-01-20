@@ -1,14 +1,14 @@
 Ralph SEO Cluster - Progreso de Ejecución
 ===========================================
 
-Última ejecución: 2026-01-20 09:32
-Artículos generados: 1
-Progreso total: 1/102 (0.98%)
+Última ejecución: [Pendiente]
+Artículos generados: 0
+Progreso total: 0/0 (0%)
 
 Último artículo generado:
-- Fecha: 2026-01-20
-- Keyword: neumáticos líder
-- Posición actual: 1
-- Volumen de búsqueda: 880/mes
+- Fecha: -
+- Keyword: -
+- Posición actual: -
+- Volumen de búsqueda: -
 
-Siguiente keyword: nankang ns 2r (590/mes)
+Siguiente keyword: [Pendiente]

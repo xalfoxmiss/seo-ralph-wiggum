@@ -1,50 +1,84 @@
-# SEO Ralph Cluster - Ejecución Prueba ✅
+# SEO Ralph Cluster - Guía de Ejecución
 
-## Resultados de la Prueba
+## Cómo Ejecutar el Sistema
 
-🎯 **Ejecución completada con éxito**
-- Fecha: 2026-01-20 10:25
-- Artículos generados: 2
-- Progreso: 2/102 (1.96%)
-- Estado: Sistema operativo
+### Configuración Inicial
 
-## Contenido Generado
+1. **Preparar archivos de configuración:**
+   - Edita `docs/brand_context.md` con la información de tu marca
+   - Edita `data/keywords.csv` con tus keywords objetivo
+   - Revisa `docs/style_guide.md` para ajustar el estilo de contenido
 
-1. **neumaticos-lider.md** (6.2 KB)
-   - Keyword: neumáticos líder
-   - Volumen: 880 búsquedas/mes
-   - Posición actual: #1
+2. **Verificar permisos:**
+   ```bash
+   chmod +x scripts/*.sh
+   ```
 
-2. **comprar-neumatico-coche-hibrido.md** (5.7 KB)
-   - Keyword: comprar neumático coche híbrido
-   - Volumen: 720 búsquedas/mes
-   - Posición actual: #1
+### Ejecución del Sistema
 
-## Sistema Verificado
+#### Opción 1: Ejecución Manual (Recomendado para pruebas)
 
-✅ Claude Code integrado
-✅ Scripts de ejecución funcionales
-✅ Enlazado interno implementado
-✅ Progreso tracking activo
-✅ Documentación completa
+```bash
+# Linux/Mac
+./scripts/run_task.sh
+
+# Windows
+claude -p "Genera el siguiente artículo SEO..."
+```
+
+#### Opción 2: Ejecución Automática en Bucle
+
+```bash
+# Linux/Mac
+./scripts/run_loop.sh
+# Ingresa el número de artículos a generar cuando se solicite
+
+# Windows
+./ralph_start.bat
+# Ingresa el número de artículos a generar
+```
+
+## Sistema de Verificación
+
+Antes de ejecutar en producción, verifica que:
+
+- [ ] Claude Code está instalado y autenticado
+- [ ] Scripts de ejecución tienen permisos correctos
+- [ ] Archivos de configuración están personalizados
+- [ ] Directorio `content/` existe y es escribible
+- [ ] El archivo `progress.txt` está inicializado
+
+## Monitoreo del Progreso
+
+El sistema registra automáticamente:
+- Número de artículos generados
+- Última keyword procesada
+- Próxima keyword en cola
+- Timestamp de última ejecución
+
+Revisa `data/progress.txt` para ver el estado actual.
 
 ## Próximos Pasos
 
-Para continuar la ejecución automática:
-```bash
-# Windows
-./ralph_start.bat
-# Ingresa: 100 (para generar 100 artículos)
+1. Ejecuta una prueba con 1-2 artículos para verificar el funcionamiento
+2. Revisa el contenido generado en `content/`
+3. Ajusta la configuración si es necesario
+4. Ejecuta el bucle completo para generar el volumen deseado
 
-# Linux/Mac
-./scripts/run_loop.sh
-# Ingresa: 100
-```
+## Solución de Problemas
 
-## Documentación Detallada
+**Error: "claude: command not found"**
+- Instala Claude Code: `npm install -g @anthropic-ai/claude-code`
+- Ejecuta: `claude init` para autenticar
 
-Ver `PROCESO_EJECUCION_RALPH.md` para análisis completo del proceso.
+**Error: "Permission denied"**
+- Ejecuta: `chmod +x scripts/*.sh`
+
+**Contenido no se genera:**
+- Verifica que `data/keywords.csv` tiene datos
+- Revisa que `docs/brand_context.md` está configurado
+- Comprueba los logs de ejecución
 
 ---
 
-**Sistema Ralph SEO Cluster - Listo para producción** 🚀
+**Sistema Ralph SEO Cluster - Listo para personalización** 🚀
