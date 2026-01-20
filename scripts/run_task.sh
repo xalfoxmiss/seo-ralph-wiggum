@@ -64,8 +64,10 @@ print_progress 3 6 "Preparando directorio de contenido..."
 echo ""
 
 if [ ! -d "content" ]; then
-    echo -e "${YELLOW}⚠️  Directorio 'content/' no existe${NC}"
-    echo -e "${CYAN}   Se solicitará permiso a Claude para crearlo${NC}"
+    echo -e "${YELLOW}⚠️  Directorio 'content/' no existe - Creándolo ahora...${NC}"
+    mkdir -p content
+    chmod 755 content
+    echo -e "${GREEN}✓ Directorio 'content/' creado con permisos de escritura${NC}"
 fi
 
 # Paso 4: Validar keywords disponibles
@@ -96,25 +98,27 @@ echo ""
 # Llamar a Claude con instrucciones detalladas
 claude -p "Estás en modo agente autónomo (Ralph).
 
-IMPORTANTE: Este sistema requiere permisos explícitos. Lee docs/permissions_system.md para entender el flujo.
+PERMISOS PRE-CONCEDIDOS:
+✓ El directorio content/ ya está creado con permisos de escritura
+✓ Tienes autorización para crear archivos .md en content/
+✓ Tienes autorización para modificar data/progress.txt
+✓ Tienes autorización para añadir enlaces internos en artículos existentes
+→ NO necesitas pedir permisos adicionales, procede directamente
 
 FLUJO DE EJECUCIÓN:
-1. LEE PRIMERO: docs/brand_context.md, docs/style_guide.md, docs/system_instructions.md y docs/permissions_system.md
+1. LEE PRIMERO: docs/brand_context.md, docs/style_guide.md, docs/system_instructions.md
 2. LEE LUEGO: estrategia_seo.md y data/keywords.csv
-3. SOLICITA PERMISOS necesarios antes de crear/modificar archivos
-4. EJECUTA: Una iteración completa de creación de contenido
-5. MUESTRA PROGRESO en consola con detalles de:
-   - Keyword seleccionada
-   - Estado de generación
-   - Enlaces internos añadidos
-   - Próxima keyword
-6. FINALIZA: Actualizando data/progress.txt con estadísticas
+3. IDENTIFICA: La siguiente keyword a procesar desde data/progress.txt
+4. GENERA: Un artículo completo de 2000-2500 palabras optimizado para SEO
+5. CREA: El archivo content/nombre-keyword.md directamente (sin pedir permiso)
+6. AÑADE: Enlaces internos contextuales a artículos relacionados si aplica
+7. ACTUALIZA: data/progress.txt con el nuevo progreso
 
 CONTROL DE PROCESO:
 - Indica claramente cada paso que estás realizando
-- Solicita confirmación antes de crear/modificar archivos
-- Muestra el progreso de forma visual
-- Reporta estadísticas al finalizar"
+- Muestra el progreso de forma visual con detalles de la keyword
+- Reporta estadísticas al finalizar
+- NO solicites permisos, los tienes pre-concedidos"
 
 # Verificar resultado de la ejecución
 exit_code=$?

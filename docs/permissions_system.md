@@ -2,7 +2,36 @@
 
 ## Descripción General
 
-El sistema Ralph requiere permisos explícitos para crear y modificar archivos durante el proceso de generación de contenido SEO. Este documento detalla los permisos necesarios, el flujo de autorización y las mejores prácticas.
+El sistema Ralph tiene **permisos pre-configurados** para crear y modificar archivos durante el proceso de generación de contenido SEO. Los scripts `run_task.sh` y `run_loop.sh` configuran automáticamente los directorios y permisos necesarios, eliminando la necesidad de solicitudes manuales repetitivas.
+
+**IMPORTANTE: El sistema ahora funciona de forma AUTOMÁTICA. No requiere confirmaciones manuales en cada iteración.**
+
+---
+
+## 🚀 Inicio Rápido - Configuración Automática
+
+El sistema Ralph ahora se configura automáticamente al ejecutar los scripts. Simplemente ejecuta:
+
+```bash
+# Para generar un solo artículo
+./scripts/run_task.sh
+
+# Para generar múltiples artículos en bucle
+./scripts/run_loop.sh
+```
+
+**Lo que sucede automáticamente:**
+
+1. ✅ Los scripts verifican si existe el directorio `content/`
+2. ✅ Si no existe, lo crean con `mkdir -p content && chmod 755 content`
+3. ✅ Configuran permisos en `data/` con `chmod 755 data`
+4. ✅ Claude recibe instrucciones con permisos PRE-CONCEDIDOS
+5. ✅ El sistema genera contenido sin pedir confirmaciones repetitivas
+
+**Ya no necesitas:**
+- ❌ Responder "s/n" para crear directorios
+- ❌ Conceder permisos manualmente en cada iteración
+- ❌ Ejecutar comandos de permisos de forma manual
 
 ---
 
@@ -186,33 +215,31 @@ n  # Para denegar
 
 ---
 
-### Concesión de Permisos para Sesión Completa
+### ✅ Configuración Automática de Permisos (NUEVO)
 
-Si ejecutas el sistema en modo bucle y quieres evitar solicitudes repetitivas, puedes conceder permisos para toda la sesión:
+El sistema ahora configura **automáticamente** todos los permisos necesarios al inicio de cada sesión:
 
-**Comando al inicio del script `run_loop.sh`:**
+**Al ejecutar `run_task.sh` o `run_loop.sh`:**
 
 ```bash
-📋 Permisos requeridos para esta sesión:
-  • Crear directorio content/
-  • Crear 10 archivos markdown nuevos en content/
-  • Modificar artículos existentes para enlaces internos
-  • Actualizar data/progress.txt en cada iteración
+📋 Configuración de permisos:
 
-¿Deseas conceder permisos para toda la sesión? (s/n)
+  • Creando directorio content/...
+    ✓ Directorio creado con permisos de escritura
+  ✓ Permisos configurados en data/
+
+✓ Permisos configurados automáticamente
+  El sistema generará N artículos con permisos pre-concedidos
 ```
 
-**Respuesta recomendada:**
-```bash
-s  # Concede permisos para todos los comandos de la sesión
-```
+**Esto significa que el sistema:**
+- ✅ Crea `content/` automáticamente si no existe
+- ✅ Establece permisos `755` en `content/` y `data/`
+- ✅ Genera archivos `.md` sin pedir confirmación
+- ✅ Actualiza `progress.txt` automáticamente
+- ✅ Añade enlaces internos sin solicitudes repetitivas
 
-Esto permite que el sistema ejecute:
-- `Write(content/*.md)` → Sin solicitar permiso en cada iteración
-- `Edit(data/progress.txt)` → Sin solicitar permiso en cada actualización
-- `Edit(content/*.md)` → Para enlaces internos, sin solicitudes repetitivas
-
-**IMPORTANTE:** Esta autorización es válida **SOLO para la sesión actual**. Debes renovar permisos en cada nueva ejecución del sistema.
+**IMPORTANTE:** Ya NO es necesario responder "s/n" en cada iteración. Todo funciona de forma automática.
 
 ---
 
