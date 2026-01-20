@@ -113,8 +113,8 @@ echo ""
 echo "───────────────────────────────────────────────────"
 echo ""
 
-# Setup automático de permisos
-echo -e "${CYAN}📋 Configuración de permisos:${NC}"
+# Setup automático de permisos y directorios
+echo -e "${CYAN}📋 Configuración del sistema:${NC}"
 echo ""
 
 # Crear directorio content si no existe
@@ -132,8 +132,9 @@ chmod 755 data
 echo -e "${GREEN}  ✓ Permisos configurados en data/${NC}"
 
 echo ""
-echo -e "${GREEN}✓ Permisos configurados automáticamente${NC}"
-echo -e "${CYAN}  El sistema generará $iterations artículos con permisos pre-concedidos${NC}"
+echo -e "${GREEN}✓ Sistema configurado en modo automático${NC}"
+echo -e "${CYAN}  Se generarán $iterations artículos sin solicitar confirmaciones${NC}"
+echo -e "${CYAN}  Modo: --permission-mode bypassPermissions${NC}"
 echo ""
 
 # Variables de tracking

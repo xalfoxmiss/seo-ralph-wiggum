@@ -2,15 +2,28 @@
 
 ## Descripción General
 
-El sistema Ralph tiene **permisos pre-configurados** para crear y modificar archivos durante el proceso de generación de contenido SEO. Los scripts `run_task.sh` y `run_loop.sh` configuran automáticamente los directorios y permisos necesarios, eliminando la necesidad de solicitudes manuales repetitivas.
+El sistema Ralph opera en **modo completamente automático** usando el flag `--permission-mode bypassPermissions` de Claude Code. Esto significa que **NO se solicitan confirmaciones** durante la ejecución.
 
-**IMPORTANTE: El sistema ahora funciona de forma AUTOMÁTICA. No requiere confirmaciones manuales en cada iteración.**
+**IMPORTANTE: El sistema funciona de forma AUTOMÁTICA. No requiere confirmaciones manuales ni permisos interactivos.**
 
 ---
 
-## 🚀 Inicio Rápido - Configuración Automática
+## 🚀 Modo Automático
 
-El sistema Ralph ahora se configura automáticamente al ejecutar los scripts. Simplemente ejecuta:
+### Cómo Funciona
+
+Los scripts `run_task.sh` y `run_loop.sh` ejecutan Claude Code con el flag:
+```bash
+claude -p --permission-mode bypassPermissions "..."
+```
+
+Esto configura el sistema para:
+- ✅ Crear archivos automáticamente sin preguntar
+- ✅ Modificar archivos existentes sin confirmación
+- ✅ Actualizar progress.txt automáticamente
+- ✅ Añadir enlaces internos sin solicitudes
+
+### Ejecución
 
 ```bash
 # Para generar un solo artículo
@@ -22,403 +35,167 @@ El sistema Ralph ahora se configura automáticamente al ejecutar los scripts. Si
 
 **Lo que sucede automáticamente:**
 
-1. ✅ Los scripts verifican si existe el directorio `content/`
-2. ✅ Si no existe, lo crean con `mkdir -p content && chmod 755 content`
-3. ✅ Configuran permisos en `data/` con `chmod 755 data`
-4. ✅ Claude recibe instrucciones con permisos PRE-CONCEDIDOS
-5. ✅ El sistema genera contenido sin pedir confirmaciones repetitivas
+1. ✅ Los scripts verifican/crean el directorio `content/`
+2. ✅ Configuran permisos en `data/` con `chmod 755 data`
+3. ✅ Claude ejecuta con permisos pre-concedidos
+4. ✅ El sistema genera contenido sin pedir confirmaciones
+5. ✅ Se actualizan automáticamente todos los archivos necesarios
 
-**Ya no necesitas:**
-- ❌ Responder "s/n" para crear directorios
+**Ya NO necesitas:**
+- ❌ Responder "s/n" para crear archivos
 - ❌ Conceder permisos manualmente en cada iteración
-- ❌ Ejecutar comandos de permisos de forma manual
+- ❌ Supervisar el proceso constantemente
 
 ---
 
-## Permisos Requeridos
+## Operaciones Automáticas
 
-### 1. Permisos de Lectura
+### 1. Lectura (Siempre Permitida)
 
-El agente Claude necesita **acceso de lectura** a los siguientes archivos y directorios:
+El sistema lee automáticamente:
 
-#### Archivos de Configuración (Obligatorios)
-- `docs/brand_context.md` - Contexto de marca y tono de comunicación
-- `docs/style_guide.md` - Guía de estilo para el contenido
+**Archivos de Configuración:**
+- `docs/brand_context.md` - Contexto de marca y tono
+- `docs/style_guide.md` - Guía de estilo
 - `docs/system_instructions.md` - Instrucciones del sistema
-- `estrategia_seo.md` - Estrategia y flujo de trabajo SEO
+- `estrategia_seo.md` - Estrategia SEO
 
-#### Archivos de Datos (Obligatorios)
-- `data/keywords.csv` - Lista de keywords objetivo con métricas
-- `data/progress.txt` - Estado actual del progreso de generación
+**Archivos de Datos:**
+- `data/keywords.csv` - Keywords objetivo con métricas
+- `data/progress.txt` - Estado actual del progreso
 
-#### Contenido Existente (Opcional)
-- `content/*.md` - Artículos previamente generados (para enlaces internos)
-
-**Estado:** Estos permisos están **SIEMPRE ACTIVOS** y no requieren autorización especial.
+**Contenido Existente:**
+- `content/*.md` - Artículos previamente generados
 
 ---
 
-### 2. Permisos de Escritura
+### 2. Escritura (Automática)
 
-El agente Claude requiere **autorización explícita** para las siguientes operaciones:
+El sistema EJECUTA automáticamente las siguientes operaciones:
 
-#### A. Creación de Directorios
+#### A. Creación de Archivos de Contenido
 
 ```bash
-# Directorio principal de contenido
-content/
-
-# Subdirectorios (si se requiere categorización)
-content/categoría-1/
-content/categoría-2/
+# Crea archivos markdown automáticamente
+content/nombre-keyword-url-friendly.md
 ```
 
-**Cuándo se requiere:** Primera ejecución o cuando no existe el directorio `content/`.
+**Cuándo:** En cada iteración de generación de artículos
 
-**Riesgo:** ⚠️ BAJO - Solo crea estructura de carpetas.
+**Formato del nombre:**
+- Basado en el campo 'URL' del CSV
+- Minúsculas, guiones, sin caracteres especiales
+- Ejemplo: URL `/categoria/ejemplo-seo/` → archivo `ejemplo-seo.md`
 
----
-
-#### B. Creación de Archivos de Contenido
-
-```bash
-# Archivos markdown de artículos
-content/nombre-articulo-seo-friendly.md
-content/otra-keyword-url-friendly.md
-```
-
-**Cuándo se requiere:** Cada iteración de generación de artículos.
-
-**Riesgo:** ⚠️ MEDIO - Crea archivos nuevos, puede sobreescribir si ya existe el nombre.
-
-**Mitigación:** El sistema verifica que no exista el archivo antes de crearlo.
+**Riesgo:** ⚠️ BAJO - El sistema verifica que el archivo no exista antes de crear
 
 ---
 
-#### C. Modificación de Archivos Existentes
+#### B. Modificación de Artículos Existentes
 
 ```bash
-# Actualización de artículos para añadir enlaces internos
+# Añade enlaces internos en artículos relacionados
 content/articulo-existente.md
+```
 
-# Actualización de progreso
+**Cuándo:** Al generar nuevos artículos que se relacionan con existentes
+
+**Operación:**
+- Identifica artículos relacionados por keywords/temática
+- Añade enlaces contextuales naturales
+- **NUNCA borra contenido existente**
+
+**Riesgo:** ⚠️ MEDIO - Solo añade enlaces, no elimina contenido
+
+---
+
+#### C. Actualización de Progreso
+
+```bash
+# Actualiza el tracking del sistema
 data/progress.txt
 ```
 
-**Cuándo se requiere:**
-- **Enlaces internos:** Al generar nuevos artículos que deben enlazarse con existentes
-- **Progress tracking:** Al finalizar cada iteración
-
-**Riesgo:** ⚠️ ALTO - Modifica contenido existente.
-
-**Mitigación:**
-- El sistema **NUNCA** borra contenido existente
-- Solo añade enlaces internos contextuales
-- `progress.txt` tiene formato estructurado que se preserva
-
----
-
-## Comandos de Permisos Explícitos Requeridos
-
-El sistema Ralph solicita permisos explícitos para ejecutar las siguientes operaciones:
-
-### Comando 1: Crear archivos nuevos en `/content/`
+**Cuándo:** Al finalizar cada iteración
 
 **Operación:**
-```bash
-# El sistema solicita permiso para ejecutar:
-Write("/home/user/seo-ralph-wiggum/content/nombre-keyword-url.md", contenido)
-```
+- Incrementa contador de artículos generados
+- Registra última keyword procesada
+- Actualiza timestamp
 
-**Cuándo se solicita:**
-- En cada iteración de generación de artículos
-- Antes de crear cualquier archivo `.md` nuevo en `content/`
-
-**Ejemplo de solicitud:**
-```
-🔐 Permiso requerido:
-   Crear archivo: content/guia-seo-completa.md
-   Tamaño estimado: ~2500 palabras
-
-   ¿Autorizar creación de este archivo? (s/n)
-```
-
-**Respuesta del usuario:**
-```bash
-s  # Para conceder permiso
-n  # Para denegar
-```
+**Riesgo:** ⚠️ BAJO - Formato estructurado preservado
 
 ---
 
-### Comando 2: Modificar `data/progress.txt`
+## Seguridad y Protecciones
 
-**Operación:**
-```bash
-# El sistema solicita permiso para ejecutar:
-Edit("data/progress.txt", old_content, new_content)
-```
+### Protecciones Implementadas
 
-**Cuándo se solicita:**
-- Al finalizar cada iteración de generación de artículo
-- Para actualizar el contador de progreso
-- Para registrar la última keyword procesada
+El sistema tiene las siguientes protecciones automáticas:
 
-**Ejemplo de solicitud:**
-```
-🔐 Permiso requerido:
-   Modificar archivo: data/progress.txt
-   Operación: Actualizar progreso de 5 a 6 artículos
+1. **No sobrescribe archivos existentes**
+   - Verifica que el archivo no exista antes de crear
+   - Si existe, el sistema lo informa y no lo sobrescribe
 
-   ¿Autorizar modificación? (s/n)
-```
+2. **No borra contenido**
+   - Al modificar artículos existentes, solo AÑADE enlaces
+   - El contenido original se preserva intacto
 
-**Respuesta del usuario:**
-```bash
-s  # Para conceder permiso
-n  # Para denegar
-```
+3. **Scope limitado**
+   - Solo opera en `content/` y `data/`
+   - No modifica archivos de configuración en `docs/`
+   - No modifica scripts
 
-**IMPORTANTE:** Esta operación es **automática** en el contexto del sistema Ralph, ya que es parte esencial del tracking. Sin embargo, el usuario debe ser consciente de que este archivo se modificará en cada iteración.
+4. **Nombres URL-friendly**
+   - Valida que los nombres de archivo sean correctos
+   - Usa el campo URL del CSV como fuente
 
----
+### Mejores Prácticas de Seguridad
 
-### Comando 3: Modificar artículos existentes (enlaces internos)
+#### ✅ Recomendado
 
-**Operación:**
-```bash
-# El sistema solicita permiso para ejecutar:
-Edit("content/articulo-existente.md", contenido_actual, contenido_con_enlaces)
-```
+1. **Primera ejecución controlada**
+   - Genera 1 artículo primero con `./scripts/run_task.sh`
+   - Revisa la calidad antes de ejecutar bucle masivo
 
-**Cuándo se solicita:**
-- Cuando se genera un nuevo artículo y se identifican artículos relacionados
-- Para añadir enlaces internos contextuales entre contenido relacionado
+2. **Backups regulares**
+   - Haz copia de `content/` antes de generación masiva
+   - Usa git para trackear cambios
 
-**Ejemplo de solicitud:**
-```
-🔐 Permiso requerido:
-   Modificar 3 artículos existentes para añadir enlaces internos:
+3. **Monitoreo de progreso**
+   - Verifica `data/progress.txt` después de cada sesión
+   - Revisa los artículos generados periódicamente
 
-   1. content/seo-basico.md (añadir 1 enlace contextual)
-   2. content/keywords-research.md (añadir 1 enlace contextual)
-   3. content/link-building.md (añadir 1 enlace contextual)
+4. **Keywords válidas**
+   - Asegúrate de que `data/keywords.csv` tenga datos reales
+   - Evita keywords duplicadas o inválidas
 
-   ¿Autorizar modificación de estos archivos? (s/n)
-```
+#### ❌ Evitar
 
-**Respuesta del usuario:**
-```bash
-s  # Para conceder permiso
-n  # Para denegar
-```
+1. **No ejecutar sin backups en producción**
+   - Siempre ten respaldo del contenido existente
+
+2. **No ignorar errores**
+   - Si el script falla, revisa los logs antes de continuar
+
+3. **No modificar archivos durante ejecución**
+   - Deja que el sistema complete antes de editar manualmente
 
 ---
 
-### ✅ Configuración Automática de Permisos (NUEVO)
+## Tabla Resumen de Operaciones
 
-El sistema ahora configura **automáticamente** todos los permisos necesarios al inicio de cada sesión:
-
-**Al ejecutar `run_task.sh` o `run_loop.sh`:**
-
-```bash
-📋 Configuración de permisos:
-
-  • Creando directorio content/...
-    ✓ Directorio creado con permisos de escritura
-  ✓ Permisos configurados en data/
-
-✓ Permisos configurados automáticamente
-  El sistema generará N artículos con permisos pre-concedidos
-```
-
-**Esto significa que el sistema:**
-- ✅ Crea `content/` automáticamente si no existe
-- ✅ Establece permisos `755` en `content/` y `data/`
-- ✅ Genera archivos `.md` sin pedir confirmación
-- ✅ Actualiza `progress.txt` automáticamente
-- ✅ Añade enlaces internos sin solicitudes repetitivas
-
-**IMPORTANTE:** Ya NO es necesario responder "s/n" en cada iteración. Todo funciona de forma automática.
-
----
-
-## Flujo de Autorización de Permisos
-
-### Primera Ejecución (Setup Inicial)
-
-```
-┌─────────────────────────────────────┐
-│ 1. Verificar existencia de content/ │
-└──────────────┬──────────────────────┘
-               │
-               ├─ NO EXISTE ──> Solicitar permiso creación
-               │                       │
-               │                       v
-               │              ┌────────────────────┐
-               │              │ Usuario concede    │
-               │              │ permiso: Sí/No     │
-               │              └─────────┬──────────┘
-               │                        │
-               │                        └─> Crear content/
-               │
-               └─ EXISTE ──> Continuar
-                              │
-                              v
-┌─────────────────────────────────────────┐
-│ 2. Generar primer artículo              │
-└──────────────┬──────────────────────────┘
-               │
-               v
-┌─────────────────────────────────────────┐
-│ 3. Solicitar permiso: crear archivo MD  │
-│    "¿Crear content/keyword-ejemplo.md?" │
-└──────────────┬──────────────────────────┘
-               │
-               └──> Usuario concede permiso
-                              │
-                              v
-┌─────────────────────────────────────────┐
-│ 4. Generar contenido optimizado         │
-└──────────────┬──────────────────────────┘
-               │
-               v
-┌─────────────────────────────────────────┐
-│ 5. Actualizar data/progress.txt         │
-│    (Permiso automático)                 │
-└─────────────────────────────────────────┘
-```
-
----
-
-### Ejecuciones Posteriores (Con Contenido Existente)
-
-```
-┌─────────────────────────────────────┐
-│ 1. Leer artículos existentes        │
-│    content/*.md                      │
-└──────────────┬──────────────────────┘
-               │
-               v
-┌─────────────────────────────────────────────┐
-│ 2. Generar nuevo artículo                   │
-└──────────────┬──────────────────────────────┘
-               │
-               v
-┌──────────────────────────────────────────────┐
-│ 3. Solicitar permiso: crear nuevo MD        │
-│    "¿Crear content/nueva-keyword.md?"       │
-└──────────────┬───────────────────────────────┘
-               │
-               └──> Usuario concede permiso
-                              │
-                              v
-┌──────────────────────────────────────────────┐
-│ 4. Identificar artículos relacionados       │
-│    (basado en keywords/temática)            │
-└──────────────┬───────────────────────────────┘
-               │
-               v
-┌──────────────────────────────────────────────┐
-│ 5. Solicitar permiso: modificar existentes  │
-│    "¿Añadir enlaces en 3 artículos?"        │
-│     - articulo-1.md                         │
-│     - articulo-2.md                         │
-│     - articulo-3.md                         │
-└──────────────┬───────────────────────────────┘
-               │
-               └──> Usuario concede permiso
-                              │
-                              v
-┌──────────────────────────────────────────────┐
-│ 6. Añadir enlaces internos contextuales     │
-│    (NO borra contenido existente)           │
-└──────────────┬───────────────────────────────┘
-               │
-               v
-┌──────────────────────────────────────────────┐
-│ 7. Actualizar data/progress.txt             │
-└──────────────────────────────────────────────┘
-```
-
----
-
-## Respuestas a Solicitudes de Permisos
-
-### ✅ Conceder Permisos (Respuestas Válidas)
-
-Cuando Claude solicita permisos, puedes responder con:
-
-```
-"Sí, procede"
-"Adelante"
-"Concedido"
-"OK"
-"Sí"
-"Yes"
-"Autorizado"
-```
-
-### ❌ Denegar Permisos (Respuestas Válidas)
-
-```
-"No"
-"Cancelar"
-"Denegar"
-"Detener"
-"No, espera"
-```
-
-### 🔄 Conceder Permisos Permanentes (Sesión Completa)
-
-Si ejecutas el sistema en bucle (`run_loop.sh`) y quieres evitar confirmaciones en cada iteración:
-
-```bash
-# Al inicio de la sesión, indica:
-"Concedo permisos para toda la sesión:
-- Crear archivos en content/
-- Modificar archivos existentes para enlaces internos
-- Actualizar progress.txt
-Procede con todas las iteraciones."
-```
-
-**Nota:** Esta autorización es válida **SOLO para la sesión actual** y debe renovarse en cada ejecución del sistema.
-
----
-
-## Mejores Prácticas de Seguridad
-
-### ✅ Hacer
-
-1. **Revisar permisos en primera ejecución:** Verifica manualmente el primer artículo antes de autorizar generación masiva
-2. **Backups regulares:** Haz copias de `content/` antes de ejecutar modificaciones masivas
-3. **Monitorear progress.txt:** Verifica que el tracking sea correcto después de cada sesión
-4. **Revisar enlaces añadidos:** Valida que los enlaces internos sean coherentes y contextuales
-
-### ❌ Evitar
-
-1. **No conceder permisos sin leer:** Siempre lee qué archivos se modificarán
-2. **No ejecutar sin backups:** En producción, siempre ten respaldos antes de generar contenido
-3. **No ignorar advertencias:** Si Claude indica que un archivo ya existe, decide conscientemente si sobreescribir
-4. **No otorgar permisos de escritura fuera de content/:** El sistema NO debe modificar archivos fuera de `content/` y `data/`
-
----
-
-## Tabla Resumen de Permisos
-
-| Operación | Directorio/Archivo | Tipo | Autorización | Riesgo |
+| Operación | Directorio/Archivo | Modo | Confirmación | Riesgo |
 |-----------|-------------------|------|--------------|--------|
-| Leer | `docs/*.md` | Lectura | Automática | Ninguno |
-| Leer | `estrategia_seo.md` | Lectura | Automática | Ninguno |
-| Leer | `data/keywords.csv` | Lectura | Automática | Ninguno |
-| Leer | `data/progress.txt` | Lectura | Automática | Ninguno |
-| Leer | `content/*.md` | Lectura | Automática | Ninguno |
-| Crear | `content/` (directorio) | Escritura | **Requerida** | Bajo |
-| Crear | `content/*.md` | Escritura | **Requerida** | Medio |
-| Modificar | `content/*.md` (existentes) | Escritura | **Requerida** | Alto |
-| Modificar | `data/progress.txt` | Escritura | Automática* | Bajo |
-
-*Automática solo para `progress.txt` porque es parte del tracking del sistema.
+| Leer | `docs/*.md` | Automático | NO | Ninguno |
+| Leer | `estrategia_seo.md` | Automático | NO | Ninguno |
+| Leer | `data/keywords.csv` | Automático | NO | Ninguno |
+| Leer | `data/progress.txt` | Automático | NO | Ninguno |
+| Leer | `content/*.md` | Automático | NO | Ninguno |
+| Crear | `content/` (directorio) | Automático | NO | Bajo |
+| Crear | `content/*.md` | Automático | NO | Bajo |
+| Modificar | `content/*.md` | Automático | NO | Medio |
+| Modificar | `data/progress.txt` | Automático | NO | Bajo |
 
 ---
 
@@ -430,44 +207,60 @@ Procede con todas las iteraciones."
 
 **Solución:**
 ```bash
-# Verificar permisos de escritura en content/
+# Verificar permisos de escritura
 ls -la content/
+ls -la data/
 
 # Otorgar permisos si es necesario
-chmod -R u+w content/
+chmod 755 content/
+chmod 755 data/
+chmod 644 data/progress.txt
 ```
 
 ---
 
-### Problema: Claude no solicita permisos y falla
+### Problema: Archivos no se crean
 
-**Causa:** Configuración incorrecta o error en el flujo
+**Causa:** Error en el script o configuración incorrecta
 
 **Solución:**
-1. Verifica que `content/` existe: `mkdir -p content`
-2. Confirma que `data/progress.txt` es escribible
-3. Reinicia la sesión de Claude Code
+1. Verifica que `content/` existe: `ls -la content/`
+2. Confirma que `data/progress.txt` es escribible: `ls -la data/progress.txt`
+3. Revisa que Claude Code esté autenticado: `claude --version`
+4. Ejecuta con debug: Revisa los logs del script
 
 ---
 
-### Problema: Archivos se sobrescriben sin autorización
+### Problema: El sistema pregunta por permisos
 
-**Causa:** Bug del sistema (no debería ocurrir)
+**Causa:** El flag `--permission-mode bypassPermissions` no está siendo usado
 
 **Solución:**
-1. Detén la ejecución inmediatamente
-2. Restaura desde backup
-3. Reporta el issue en el repositorio del sistema
+1. Verifica que los scripts tengan el flag actualizado
+2. Revisa el contenido de `scripts/run_task.sh` línea ~99
+3. Debe contener: `claude -p --permission-mode bypassPermissions`
+
+---
+
+### Problema: Contenido generado de baja calidad
+
+**Causa:** Configuración de marca incompleta
+
+**Solución:**
+1. Completa `docs/brand_context.md` con información real
+2. Revisa `docs/style_guide.md` y personaliza el estilo
+3. Actualiza `data/keywords.csv` con keywords reales
+4. Ejecuta nuevamente para ver mejoras
 
 ---
 
 ## Conclusión
 
-El sistema de permisos está diseñado para:
+El sistema Ralph opera en **modo completamente automático**:
 
-1. **✅ Proteger contenido existente:** Nunca borra archivos sin confirmación
-2. **✅ Transparencia:** Siempre informa qué archivos se crearán/modificarán
-3. **✅ Flexibilidad:** Permite autorización por archivo o por sesión completa
-4. **✅ Seguridad:** Requiere confirmación para operaciones de riesgo
+- ✅ **Sin confirmaciones**: No solicita permisos durante la ejecución
+- ✅ **Rápido**: Genera contenido sin interrupciones
+- ✅ **Seguro**: Protecciones integradas contra sobrescritura y pérdida de datos
+- ✅ **Eficiente**: Ideal para generación masiva de contenido SEO
 
-Este sistema garantiza que mantengas control total sobre el contenido generado mientras permites automatización eficiente.
+Este diseño permite automatización completa mientras mantiene protecciones esenciales.

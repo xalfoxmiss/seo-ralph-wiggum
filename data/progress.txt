@@ -1,14 +1,17 @@
 Ralph SEO Cluster - Progreso de Ejecución
 ===========================================
 
-Última ejecución: [Pendiente]
-Artículos generados: 0
-Progreso total: 0/0 (0%)
+Última ejecución: 2026-01-20
+Artículos generados: 1
+Progreso total: 1/5 (20%)
 
 Último artículo generado:
-- Fecha: -
-- Keyword: -
-- Posición actual: -
-- Volumen de búsqueda: -
+- Fecha: 2026-01-20
+- Keyword: keyword ejemplo 1
+- Archivo: content/categoria-1.md
+- Volumen de búsqueda: 1000
+- Dificultad: 30
+- Intención: informational, transactional
+- Palabras: ~2450
 
-Siguiente keyword: [Pendiente]
+Siguiente keyword: keyword ejemplo 2
