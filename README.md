@@ -1,54 +1,332 @@
-# 🕵️ Ralph SEO Cluster (Pro Edition)
+# SEO Ralph Cluster - Guía de Ejecución
 
-> **"Me fail English? That's unpossible!"** — *Ralph Wiggum*
+## Cómo Ejecutar el Sistema
 
-Sistema de automatización de contenidos SEO programático utilizando **Claude Code** como agente autónomo.
+### Configuración Inicial
 
-## 🧠 Arquitectura del Motor (¿Cómo funciona?)
+1. **Preparar archivos de configuración:**
+   - Edita `docs/brand_context.md` con la información de tu marca
+   - Edita `data/keywords.csv` con tus keywords objetivo
+   - Revisa `docs/style_guide.md` para ajustar el estilo de contenido
 
-Este sistema no es un script de Python o Node aislado. Funciona como una **orquestación de shell scripts** que invocan la herramienta CLI de Anthropic.
+2. **Verificar permisos del sistema:**
+   ```bash
+   chmod +x scripts/*.sh
+   ```
 
-1.  **El Detonador (`run_loop.sh`):** Inicia un bucle `for` simple en Bash.
-2.  **El Operario (`run_task.sh`):**
-    * Ejecuta el comando: `claude -p "PROMPT..."`
-    * Esto conecta tu terminal local con la **API de Anthropic** (Modelo Claude).
-    * Le inyecta el contexto de la carpeta `/docs` y `/data`.
-3.  **La Acción (Tool Use):**
-    * Claude devuelve instrucciones para crear archivos (`write_file`) o ejecutar comandos (`bash`).
-    * Tu ordenador ejecuta esas instrucciones (gracias a los permisos en `.claude/settings.local.json`).
+3. **Leer documentación de permisos:**
+   - Revisa `docs/permissions_system.md` para entender cómo funciona el sistema de autorización
+   - El sistema solicitará permisos antes de crear/modificar archivos
 
-## 📋 Requisitos Previos (CRÍTICO)
+### Ejecución del Sistema
 
-Para que el "motor" arranque, necesitas instalar esto en tu máquina:
+#### Opción 1: Ejecución Manual (Recomendado para pruebas)
 
-1.  **Node.js (v18 o superior):**
-    * Comprobar: `node -v`
-    * Instalar: [nodejs.org](https://nodejs.org/)
-2.  **Claude Code (La herramienta oficial):**
-    * Instalar: `npm install -g @anthropic-ai/claude-code`
-    * **Autenticar (Vital):** Ejecuta `claude init` y sigue los pasos para loguearte.
+```bash
+# Linux/Mac
+./scripts/run_task.sh
+```
 
-## 🚀 Uso Rápido
+**Características:**
+- ✅ Validación automática de requisitos
+- ✅ Barra de progreso visual (6 pasos)
+- ✅ Verificación de archivos de configuración
+- ✅ Solicitud de permisos interactiva
+- ✅ Feedback detallado en consola con colores
+- ✅ Resumen de estadísticas al finalizar
 
-1.  **Preparación:**
-    ```bash
-    chmod +x scripts/*.sh
-    ```
-2.  **Personalización:**
-    * Edita `docs/brand_context.md` (Tu marca).
-    * Edita `data/keywords.csv` (Tus temas).
-3.  **Ejecución:**
-    ```bash
-    ./scripts/run_loop.sh
-    ```
+**Flujo de ejecución:**
+1. Valida que Claude Code está instalado
+2. Verifica archivos de configuración requeridos
+3. Prepara directorio `content/` (solicita permiso si no existe)
+4. Valida keywords disponibles en CSV
+5. Ejecuta el agente Claude Ralph
+6. Muestra estado final en `progress.txt`
 
-## 📂 Estructura de Archivos
+---
 
-* `docs/`: **Gobernanza.** El agente lee esto ANTES de escribir nada.
-* `data/`: **Input.** CSV de keywords y tracker de progreso.
-* `content/`: **Output.** Aquí aparecen los .md mágicamente.
-* `scripts/`: **Lógica.** Los scripts que conectan con la API.
+#### Opción 2: Ejecución Automática en Bucle
 
-## ⚠️ Control de Costes
-Este sistema consume tokens de entrada (leyendo docs) y salida (escribiendo artículos).
-* Monitorea tu uso ejecutando `/cost` dentro de una sesión interactiva de Claude.
+```bash
+# Linux/Mac
+./scripts/run_loop.sh
+```
+
+**Características:**
+- ✅ Banner visual profesional
+- ✅ Validación de configuración
+- ✅ Contador de keywords disponibles
+- ✅ Solicitud de permisos para toda la sesión
+- ✅ Barra de progreso del bucle completo
+- ✅ Tracking de artículos exitosos/fallidos
+- ✅ Estadísticas finales (total, exitosos, fallidos, duración)
+- ✅ Opción de continuar/detener ante fallos
+
+**Flujo interactivo:**
+```
+1. Sistema muestra banner y verifica Claude Code
+2. Cuenta keywords disponibles en CSV
+3. Solicita: ¿Cuántos artículos generar?
+4. Valida que no exceda keywords disponibles
+5. Solicita permisos para toda la sesión:
+   • Crear directorio content/
+   • Crear N archivos markdown
+   • Modificar artículos existentes (enlaces)
+   • Actualizar progress.txt
+6. Ejecuta bucle con barra de progreso
+7. Muestra estadísticas finales
+```
+
+**Ejemplo de salida:**
+```
+╔═══════════════════════════════════════════════════╗
+║       🕵️  SEO RALPH CLUSTER - MODO BUCLE  🕵️       ║
+╚═══════════════════════════════════════════════════╝
+
+✓ Claude Code detectado
+ℹ️  Keywords disponibles: 20
+
+¿Cuántos artículos deseas generar?
+➜ Cantidad: 5
+
+📋 Permisos requeridos para esta sesión:
+  • Crear directorio content/
+  • Crear 5 archivos markdown nuevos
+  • Modificar artículos existentes para enlaces internos
+  • Actualizar data/progress.txt
+
+¿Deseas conceder permisos? (s/n)
+➜ Respuesta: s
+
+╔════════════════════════════════════════════════════╗
+║ Progreso General: Artículo 3 de 5
+║ [████████████████████░░░░░░░] 60%
+╚════════════════════════════════════════════════════╝
+
+📊 Estadísticas de la sesión:
+  Total: 5
+  Exitosas: 5
+  Fallidas: 0
+  Duración: 120s
+  Promedio: 24s
+
+🎉 ¡Todos los artículos generados exitosamente!
+```
+
+---
+
+### Sistema de Permisos
+
+**IMPORTANTE:** El sistema requiere autorización explícita para crear/modificar archivos.
+
+#### Permisos de Lectura (Automáticos)
+- ✅ Todos los archivos en `docs/`
+- ✅ `data/keywords.csv` y `data/progress.txt`
+- ✅ Artículos existentes en `content/`
+
+#### Permisos de Escritura (Requieren Autorización)
+
+**Primera ejecución:**
+1. Crear directorio `content/` → **Solicita permiso**
+2. Crear archivos `.md` → **Solicita permiso**
+3. Actualizar `progress.txt` → **Automático**
+
+**Ejecuciones posteriores:**
+1. Crear nuevos archivos `.md` → **Solicita permiso**
+2. Modificar archivos existentes (enlaces) → **Solicita permiso**
+3. Actualizar `progress.txt` → **Automático**
+
+**Modo Sesión Completa:**
+- Al ejecutar `run_loop.sh`, concedes permisos al inicio
+- No se solicitan permisos individuales durante el bucle
+- Válido solo para la sesión actual
+
+📖 **Documentación completa:** `docs/permissions_system.md`
+
+---
+
+## Sistema de Verificación
+
+Antes de ejecutar en producción, verifica que:
+
+- [ ] Claude Code está instalado (`claude --version`)
+- [ ] Autenticación completada (`claude init`)
+- [ ] Scripts tienen permisos de ejecución (`chmod +x scripts/*.sh`)
+- [ ] `docs/brand_context.md` está personalizado
+- [ ] `data/keywords.csv` tiene keywords válidas (>0)
+- [ ] Has leído `docs/permissions_system.md`
+
+**Validación automática:**
+Los scripts ahora validan automáticamente estos requisitos antes de ejecutar.
+
+---
+
+## Monitoreo del Progreso
+
+### En Tiempo Real (Consola)
+
+El sistema muestra durante la ejecución:
+
+```
+📍 Keyword: "ejemplo keyword"
+📊 Volumen: 1000 | Dificultad: 30 | Intención: informational
+
+⏳ Generando artículo...
+✓ Artículo generado (1500 palabras)
+
+🔗 Enlaces añadidos:
+- articulo-1.md (1 enlace contextual)
+- articulo-2.md (1 enlace contextual)
+
+➡️  Siguiente: "otra keyword"
+
+✓ Iteración completada
+📊 Progreso: 5/20 artículos (25%)
+```
+
+### Archivo de Progreso
+
+El sistema actualiza `data/progress.txt` automáticamente:
+
+```
+Ralph SEO Cluster - Progreso de Ejecución
+===========================================
+
+Última ejecución: 2026-01-20 15:30:00
+Artículos generados: 5
+Progreso total: 5/20 (25%)
+
+Último artículo generado:
+- Fecha: 2026-01-20 15:30:00
+- Keyword: ejemplo keyword
+- Posición actual: 5
+- Volumen de búsqueda: 1000
+
+Siguiente keyword: otra keyword
+```
+
+---
+
+## Características de los Scripts Mejorados
+
+### run_task.sh
+- 🎨 **Colores en consola** (rojo, verde, amarillo, azul, cyan)
+- 📊 **Barra de progreso** de 6 pasos
+- ✅ **Validación automática** de requisitos
+- 🔍 **Verificación de archivos** de configuración
+- 📋 **Conteo de keywords** disponibles
+- 📊 **Resumen final** con estado de progress.txt
+
+### run_loop.sh
+- 🎨 **Banner visual profesional**
+- 📊 **Barra de progreso Unicode** (█ ░)
+- 🔢 **Contador de artículos** disponibles
+- ✅ **Validación de entrada** del usuario
+- ⏱️ **Medición de tiempos** (total y promedio)
+- 📊 **Estadísticas detalladas** (exitosos/fallidos)
+- 🛑 **Control de errores** con opción de continuar
+
+---
+
+## Próximos Pasos
+
+1. **Prueba inicial:**
+   ```bash
+   ./scripts/run_task.sh
+   ```
+   Genera 1 artículo para verificar funcionamiento
+
+2. **Revisión de calidad:**
+   - Verifica el contenido en `content/`
+   - Comprueba que cumple estándares SEO
+   - Valida enlaces internos (si existen otros artículos)
+
+3. **Ajustes (si es necesario):**
+   - Refina `docs/brand_context.md`
+   - Ajusta `docs/style_guide.md`
+   - Actualiza keywords en `data/keywords.csv`
+
+4. **Generación en volumen:**
+   ```bash
+   ./scripts/run_loop.sh
+   ```
+   Genera el volumen deseado con permisos de sesión
+
+---
+
+## Solución de Problemas
+
+### Error: "claude: command not found"
+**Causa:** Claude Code no está instalado
+
+**Solución:**
+```bash
+npm install -g @anthropic-ai/claude-code
+claude init  # Autenticar
+```
+
+---
+
+### Error: "Permission denied"
+**Causa:** Scripts no tienen permisos de ejecución
+
+**Solución:**
+```bash
+chmod +x scripts/*.sh
+```
+
+---
+
+### Error: "No hay keywords en data/keywords.csv"
+**Causa:** El archivo CSV está vacío o solo tiene encabezados
+
+**Solución:**
+1. Abre `data/keywords.csv`
+2. Añade keywords con formato:
+   ```csv
+   keyword,search_volume,difficulty,url,intent
+   ejemplo keyword,1000,30,/ejemplo-keyword,informational
+   ```
+
+---
+
+### Error: Sistema solicita permisos en cada iteración del bucle
+**Causa:** No se concedieron permisos al inicio de `run_loop.sh`
+
+**Solución:**
+- Al ejecutar `run_loop.sh`, responde "s" (sí) cuando solicita permisos
+- Esto concede autorización para toda la sesión
+
+---
+
+### Contenido generado no cumple estándares
+**Causa:** Configuración de marca incompleta
+
+**Solución:**
+1. Completa `docs/brand_context.md` con toda la información
+2. Revisa `docs/style_guide.md` y personaliza el tono
+3. Ejecuta nuevamente para ver mejoras
+
+---
+
+### Barras de progreso no se muestran correctamente
+**Causa:** Terminal no soporta colores ANSI
+
+**Solución:**
+- Usa una terminal moderna (iTerm2, Windows Terminal, Hyper)
+- O ejecuta con: `TERM=xterm-256color ./scripts/run_loop.sh`
+
+---
+
+## Recursos Adicionales
+
+| Documento | Descripción |
+|-----------|-------------|
+| `docs/permissions_system.md` | Sistema de permisos completo |
+| `PROCESO_EJECUCION_RALPH.md` | Flujo detallado del sistema |
+| `docs/system_instructions.md` | Instrucciones del agente Claude |
+| `estrategia_seo.md` | Estrategia de contenido SEO |
+
+---
+
+**Sistema Ralph SEO Cluster - Listo para personalización** 🚀
