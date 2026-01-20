@@ -11,7 +11,7 @@ Este sistema no es un script de Python o Node aislado. Funciona como una **orque
 1.  **El Detonador (`run_loop.sh`):** Inicia un bucle `for` simple en Bash.
 2.  **El Operario (`run_task.sh`):**
     * Ejecuta el comando: `claude -p "PROMPT..."`
-    * Esto conecta tu terminal local con la **API de Anthropic** (Modelo Claude 3.5 Sonnet).
+    * Esto conecta tu terminal local con la **API de Anthropic** (Modelo Claude).
     * Le inyecta el contexto de la carpeta `/docs` y `/data`.
 3.  **La Acción (Tool Use):**
     * Claude devuelve instrucciones para crear archivos (`write_file`) o ejecutar comandos (`bash`).
