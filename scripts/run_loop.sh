@@ -113,25 +113,27 @@ echo ""
 echo "───────────────────────────────────────────────────"
 echo ""
 
-# Confirmación de permisos para toda la sesión
-echo -e "${CYAN}📋 Permisos requeridos para esta sesión:${NC}"
+# Setup automático de permisos
+echo -e "${CYAN}📋 Configuración de permisos:${NC}"
 echo ""
-echo "  • Crear directorio content/ (si no existe)"
-echo "  • Crear $iterations archivos markdown nuevos"
-echo "  • Modificar artículos existentes para enlaces internos"
-echo "  • Actualizar data/progress.txt"
-echo ""
-echo -e "${YELLOW}¿Deseas conceder permisos para toda la sesión? (s/n)${NC}"
-echo -n "➜ Respuesta: "
-read permission
 
-if [[ ! "$permission" =~ ^[sS]$ ]]; then
-    echo -e "${YELLOW}⚠️  Operación cancelada por el usuario${NC}"
-    exit 0
+# Crear directorio content si no existe
+if [ ! -d "content" ]; then
+    echo -e "${YELLOW}  • Creando directorio content/...${NC}"
+    mkdir -p content
+    chmod 755 content
+    echo -e "${GREEN}    ✓ Directorio creado con permisos de escritura${NC}"
+else
+    echo -e "${GREEN}  ✓ Directorio content/ ya existe${NC}"
 fi
 
+# Verificar permisos de data/
+chmod 755 data
+echo -e "${GREEN}  ✓ Permisos configurados en data/${NC}"
+
 echo ""
-echo -e "${GREEN}✓ Permisos concedidos para la sesión completa${NC}"
+echo -e "${GREEN}✓ Permisos configurados automáticamente${NC}"
+echo -e "${CYAN}  El sistema generará $iterations artículos con permisos pre-concedidos${NC}"
 echo ""
 
 # Variables de tracking
