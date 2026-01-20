@@ -14,7 +14,7 @@ for /L %%i in (1,1,%iterations%) do (
    echo ==========================================
    echo.
    
-   call claude -p "Estás en modo agente autónomo (Ralph). 1. LEE PRIMERO: docs/brand_context.md, docs/style_guide.md y docs/system_instructions.md. 2. LEE LUEGO: estrategia_seo.md. 3. EJECUTA: Una iteración completa (Investigacion -> Redaccion -> Interlinking -> Git Commit). IMPORTANTE: No pidas confirmacion manual, procede."
+   call claude -p "Estás en modo agente autónomo (Ralph). 1. LEE PRIMERO: docs/brand_context.md, docs/style_guide.md y docs/system_instructions.md. 2. LEE LUEGO: estrategia_seo.md. 3. EJECUTA: Una iteración completa (Investigacion -> Redaccion -> Interlinking -> Guardar progreso). IMPORTANTE: No pidas confirmacion manual, procede."
    
    echo.
    echo [OK] Articulo %%i terminado. Descansando 5 segundos...

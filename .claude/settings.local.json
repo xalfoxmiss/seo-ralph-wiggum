@@ -5,17 +5,11 @@
       "Bash(./scripts/run_task.sh:*)",
       "Bash(claude:*)",
       "Bash(ralph_start:*)",
-      "Bash(git init:*)",
-      "Bash(git config:*)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
       "Bash(du:*)",
       "Bash(grep:*)"
     ]
   },
   "auto_approve": [
-    "git add .",
-    "git commit *",
     "ls",
     "cat *",
     "grep *",

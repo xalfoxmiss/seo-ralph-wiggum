@@ -14,10 +14,8 @@
 
 ### 1. Inicialización del Sistema
 ```bash
-# Configuración inicial
-git init
-git config user.name "Ralph SEO Agent"
-git config user.email "ralph@yofindo.com"
+# Configuración inicial del proyecto
+# Se prepara el entorno de trabajo
 ```
 
 ### 2. Selección de Keywords
@@ -74,19 +72,7 @@ Archivo `data/progress.txt` actualizado:
 - Última ejecución: 2026-01-20 10:25
 - Artículos generados: 2
 - Progreso total: 2/102 (1.96%)
-- Último commit: a89f9b2
 - Siguiente keyword: nankang ns 2r (590/mes)
-
-### 6. Git Management
-```bash
-git add .
-git commit -m "RALPH-001: Primer artículo SEO generado
-- Keyword: neumáticos líder (880 búsquedas/mes, posición #1)
-- Artículo: content/neumaticos-lider.md
-- Contenido: Guía completa sobre neumáticos líderes
-- Interlinking: Enlace a comprar-neumatico-coche-hibrido.md
-- Progreso: 1/102 artículos generados (0.98%)"
-```
 
 ---
 
@@ -137,9 +123,6 @@ content/
 
 data/
 └── progress.txt (actualizado)
-
-.git/
-└── commits/ (1 commit: a89f9b2)
 ```
 
 ### Métricas del Sistema:

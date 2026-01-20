@@ -27,13 +27,6 @@ Para que el "motor" arranque, necesitas instalar esto en tu máquina:
 2.  **Claude Code (La herramienta oficial):**
     * Instalar: `npm install -g @anthropic-ai/claude-code`
     * **Autenticar (Vital):** Ejecuta `claude init` y sigue los pasos para loguearte.
-3.  **Git Configurado:**
-    * El agente hará commits. Necesita saber quién eres.
-    * Ejecuta:
-        ```bash
-        git config --global user.name "Tu Nombre"
-        git config --global user.email "tu@email.com"
-        ```
 
 ## 🚀 Uso Rápido
 
