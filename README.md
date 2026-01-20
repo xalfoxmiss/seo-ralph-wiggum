@@ -126,22 +126,56 @@
 
 #### Permisos de Escritura (Requieren Autorización)
 
+El sistema solicitará permisos explícitos para ejecutar los siguientes comandos:
+
+**Comando 1: Crear archivos nuevos en `/content/`**
+```bash
+Write("content/nombre-keyword-url.md", contenido)
+```
+- ✅ Solicitado en cada iteración de generación de artículos
+- ✅ Ejemplo: `¿Crear content/guia-seo-completa.md? (s/n)`
+
+**Comando 2: Modificar `data/progress.txt`**
+```bash
+Edit("data/progress.txt", old_content, new_content)
+```
+- ✅ Solicitado al finalizar cada iteración
+- ✅ Ejemplo: `¿Actualizar progreso de 5 a 6 artículos? (s/n)`
+- ⚠️ **NOTA:** Esta operación es automática en modo bucle con permisos de sesión
+
+**Comando 3: Modificar artículos existentes (enlaces internos)**
+```bash
+Edit("content/articulo-existente.md", contenido_actual, contenido_con_enlaces)
+```
+- ✅ Solicitado cuando se añaden enlaces internos entre artículos relacionados
+- ✅ Ejemplo: `¿Modificar 3 artículos para añadir enlaces? (s/n)`
+
+#### Flujo de Permisos
+
 **Primera ejecución:**
 1. Crear directorio `content/` → **Solicita permiso**
-2. Crear archivos `.md` → **Solicita permiso**
-3. Actualizar `progress.txt` → **Automático**
+2. Crear archivos `.md` → **Solicita permiso** (Comando 1)
+3. Actualizar `progress.txt` → **Solicita permiso** (Comando 2)
 
 **Ejecuciones posteriores:**
-1. Crear nuevos archivos `.md` → **Solicita permiso**
-2. Modificar archivos existentes (enlaces) → **Solicita permiso**
-3. Actualizar `progress.txt` → **Automático**
+1. Crear nuevos archivos `.md` → **Solicita permiso** (Comando 1)
+2. Modificar archivos existentes (enlaces) → **Solicita permiso** (Comando 3)
+3. Actualizar `progress.txt` → **Solicita permiso** (Comando 2)
 
-**Modo Sesión Completa:**
-- Al ejecutar `run_loop.sh`, concedes permisos al inicio
-- No se solicitan permisos individuales durante el bucle
+**Modo Sesión Completa (`run_loop.sh`):**
+```bash
+📋 Permisos requeridos para esta sesión:
+  • Crear directorio content/
+  • Crear N archivos markdown nuevos
+  • Modificar artículos existentes para enlaces internos
+  • Actualizar data/progress.txt
+
+¿Conceder permisos para toda la sesión? (s/n)
+```
+- Al conceder permisos al inicio, se ejecutan todos los comandos sin solicitudes individuales
 - Válido solo para la sesión actual
 
-📖 **Documentación completa:** `docs/permissions_system.md`
+📖 **Documentación completa con ejemplos:** `docs/permissions_system.md`
 
 ---
 

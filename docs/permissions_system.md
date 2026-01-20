@@ -89,6 +89,133 @@ data/progress.txt
 
 ---
 
+## Comandos de Permisos Explícitos Requeridos
+
+El sistema Ralph solicita permisos explícitos para ejecutar las siguientes operaciones:
+
+### Comando 1: Crear archivos nuevos en `/content/`
+
+**Operación:**
+```bash
+# El sistema solicita permiso para ejecutar:
+Write("/home/user/seo-ralph-wiggum/content/nombre-keyword-url.md", contenido)
+```
+
+**Cuándo se solicita:**
+- En cada iteración de generación de artículos
+- Antes de crear cualquier archivo `.md` nuevo en `content/`
+
+**Ejemplo de solicitud:**
+```
+🔐 Permiso requerido:
+   Crear archivo: content/guia-seo-completa.md
+   Tamaño estimado: ~2500 palabras
+
+   ¿Autorizar creación de este archivo? (s/n)
+```
+
+**Respuesta del usuario:**
+```bash
+s  # Para conceder permiso
+n  # Para denegar
+```
+
+---
+
+### Comando 2: Modificar `data/progress.txt`
+
+**Operación:**
+```bash
+# El sistema solicita permiso para ejecutar:
+Edit("data/progress.txt", old_content, new_content)
+```
+
+**Cuándo se solicita:**
+- Al finalizar cada iteración de generación de artículo
+- Para actualizar el contador de progreso
+- Para registrar la última keyword procesada
+
+**Ejemplo de solicitud:**
+```
+🔐 Permiso requerido:
+   Modificar archivo: data/progress.txt
+   Operación: Actualizar progreso de 5 a 6 artículos
+
+   ¿Autorizar modificación? (s/n)
+```
+
+**Respuesta del usuario:**
+```bash
+s  # Para conceder permiso
+n  # Para denegar
+```
+
+**IMPORTANTE:** Esta operación es **automática** en el contexto del sistema Ralph, ya que es parte esencial del tracking. Sin embargo, el usuario debe ser consciente de que este archivo se modificará en cada iteración.
+
+---
+
+### Comando 3: Modificar artículos existentes (enlaces internos)
+
+**Operación:**
+```bash
+# El sistema solicita permiso para ejecutar:
+Edit("content/articulo-existente.md", contenido_actual, contenido_con_enlaces)
+```
+
+**Cuándo se solicita:**
+- Cuando se genera un nuevo artículo y se identifican artículos relacionados
+- Para añadir enlaces internos contextuales entre contenido relacionado
+
+**Ejemplo de solicitud:**
+```
+🔐 Permiso requerido:
+   Modificar 3 artículos existentes para añadir enlaces internos:
+
+   1. content/seo-basico.md (añadir 1 enlace contextual)
+   2. content/keywords-research.md (añadir 1 enlace contextual)
+   3. content/link-building.md (añadir 1 enlace contextual)
+
+   ¿Autorizar modificación de estos archivos? (s/n)
+```
+
+**Respuesta del usuario:**
+```bash
+s  # Para conceder permiso
+n  # Para denegar
+```
+
+---
+
+### Concesión de Permisos para Sesión Completa
+
+Si ejecutas el sistema en modo bucle y quieres evitar solicitudes repetitivas, puedes conceder permisos para toda la sesión:
+
+**Comando al inicio del script `run_loop.sh`:**
+
+```bash
+📋 Permisos requeridos para esta sesión:
+  • Crear directorio content/
+  • Crear 10 archivos markdown nuevos en content/
+  • Modificar artículos existentes para enlaces internos
+  • Actualizar data/progress.txt en cada iteración
+
+¿Deseas conceder permisos para toda la sesión? (s/n)
+```
+
+**Respuesta recomendada:**
+```bash
+s  # Concede permisos para todos los comandos de la sesión
+```
+
+Esto permite que el sistema ejecute:
+- `Write(content/*.md)` → Sin solicitar permiso en cada iteración
+- `Edit(data/progress.txt)` → Sin solicitar permiso en cada actualización
+- `Edit(content/*.md)` → Para enlaces internos, sin solicitudes repetitivas
+
+**IMPORTANTE:** Esta autorización es válida **SOLO para la sesión actual**. Debes renovar permisos en cada nueva ejecución del sistema.
+
+---
+
 ## Flujo de Autorización de Permisos
 
 ### Primera Ejecución (Setup Inicial)
