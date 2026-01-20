@@ -14,9 +14,9 @@
    chmod +x scripts/*.sh
    ```
 
-3. **Leer documentación de permisos:**
-   - Revisa `docs/permissions_system.md` para entender cómo funciona el sistema de autorización
-   - El sistema solicitará permisos antes de crear/modificar archivos
+3. **Leer documentación del sistema:**
+   - Revisa `docs/permissions_system.md` para entender el modo automático
+   - El sistema opera con permisos pre-configurados (no solicita confirmaciones)
 
 ### Ejecución del Sistema
 
@@ -31,16 +31,16 @@
 - ✅ Validación automática de requisitos
 - ✅ Barra de progreso visual (6 pasos)
 - ✅ Verificación de archivos de configuración
-- ✅ Solicitud de permisos interactiva
+- ✅ Ejecución automática sin solicitudes de permisos
 - ✅ Feedback detallado en consola con colores
 - ✅ Resumen de estadísticas al finalizar
 
 **Flujo de ejecución:**
 1. Valida que Claude Code está instalado
 2. Verifica archivos de configuración requeridos
-3. Prepara directorio `content/` (solicita permiso si no existe)
+3. Prepara directorio `content/` automáticamente
 4. Valida keywords disponibles en CSV
-5. Ejecuta el agente Claude Ralph
+5. Ejecuta el agente Claude Ralph en modo automático (`--permission-mode bypassPermissions`)
 6. Muestra estado final en `progress.txt`
 
 ---
@@ -56,24 +56,20 @@
 - ✅ Banner visual profesional
 - ✅ Validación de configuración
 - ✅ Contador de keywords disponibles
-- ✅ Solicitud de permisos para toda la sesión
+- ✅ Configuración automática de permisos
 - ✅ Barra de progreso del bucle completo
 - ✅ Tracking de artículos exitosos/fallidos
 - ✅ Estadísticas finales (total, exitosos, fallidos, duración)
 - ✅ Opción de continuar/detener ante fallos
 
-**Flujo interactivo:**
+**Flujo de ejecución:**
 ```
 1. Sistema muestra banner y verifica Claude Code
 2. Cuenta keywords disponibles en CSV
 3. Solicita: ¿Cuántos artículos generar?
 4. Valida que no exceda keywords disponibles
-5. Solicita permisos para toda la sesión:
-   • Crear directorio content/
-   • Crear N archivos markdown
-   • Modificar artículos existentes (enlaces)
-   • Actualizar progress.txt
-6. Ejecuta bucle con barra de progreso
+5. Configura automáticamente permisos y directorios
+6. Ejecuta bucle con barra de progreso (modo automático)
 7. Muestra estadísticas finales
 ```
 
@@ -89,14 +85,13 @@
 ¿Cuántos artículos deseas generar?
 ➜ Cantidad: 5
 
-📋 Permisos requeridos para esta sesión:
-  • Crear directorio content/
-  • Crear 5 archivos markdown nuevos
-  • Modificar artículos existentes para enlaces internos
-  • Actualizar data/progress.txt
+📋 Configuración del sistema:
+  ✓ Directorio content/ ya existe
+  ✓ Permisos configurados en data/
 
-¿Deseas conceder permisos? (s/n)
-➜ Respuesta: s
+✓ Sistema configurado en modo automático
+  Se generarán 5 artículos sin solicitar confirmaciones
+  Modo: --permission-mode bypassPermissions
 
 ╔════════════════════════════════════════════════════╗
 ║ Progreso General: Artículo 3 de 5
@@ -115,67 +110,50 @@
 
 ---
 
-### Sistema de Permisos
+### Sistema de Ejecución Automática
 
-**IMPORTANTE:** El sistema requiere autorización explícita para crear/modificar archivos.
+**IMPORTANTE:** El sistema opera en modo completamente automático sin solicitar confirmaciones.
 
-#### Permisos de Lectura (Automáticos)
-- ✅ Todos los archivos en `docs/`
-- ✅ `data/keywords.csv` y `data/progress.txt`
-- ✅ Artículos existentes en `content/`
+#### Modo Automático (`--permission-mode bypassPermissions`)
 
-#### Permisos de Escritura (Requieren Autorización)
+El sistema está configurado para:
+- ✅ Crear archivos automáticamente en `content/`
+- ✅ Modificar archivos existentes para enlaces internos
+- ✅ Actualizar `data/progress.txt` automáticamente
+- ✅ Configurar permisos de directorios automáticamente
 
-El sistema solicitará permisos explícitos para ejecutar los siguientes comandos:
+**Operaciones Automáticas:**
 
-**Comando 1: Crear archivos nuevos en `/content/`**
+**1. Crear artículos nuevos**
 ```bash
 Write("content/nombre-keyword-url.md", contenido)
 ```
-- ✅ Solicitado en cada iteración de generación de artículos
-- ✅ Ejemplo: `¿Crear content/guia-seo-completa.md? (s/n)`
+- Ejecuta INMEDIATAMENTE sin solicitar confirmación
+- Usa el campo URL del CSV para el nombre del archivo
+- Ejemplo: URL `/categoria/ejemplo/` → archivo `ejemplo.md`
 
-**Comando 2: Modificar `data/progress.txt`**
+**2. Actualizar progreso**
 ```bash
 Edit("data/progress.txt", old_content, new_content)
 ```
-- ✅ Solicitado al finalizar cada iteración
-- ✅ Ejemplo: `¿Actualizar progreso de 5 a 6 artículos? (s/n)`
-- ⚠️ **NOTA:** Esta operación es automática en modo bucle con permisos de sesión
+- Actualiza automáticamente después de cada artículo
+- Registra keyword procesada, timestamp y estadísticas
 
-**Comando 3: Modificar artículos existentes (enlaces internos)**
+**3. Enlaces internos**
 ```bash
 Edit("content/articulo-existente.md", contenido_actual, contenido_con_enlaces)
 ```
-- ✅ Solicitado cuando se añaden enlaces internos entre artículos relacionados
-- ✅ Ejemplo: `¿Modificar 3 artículos para añadir enlaces? (s/n)`
+- Añade enlaces contextuales automáticamente
+- Solo AÑADE contenido, NUNCA elimina
 
-#### Flujo de Permisos
+#### Protecciones del Sistema
 
-**Primera ejecución:**
-1. Crear directorio `content/` → **Solicita permiso**
-2. Crear archivos `.md` → **Solicita permiso** (Comando 1)
-3. Actualizar `progress.txt` → **Solicita permiso** (Comando 2)
+1. **No sobrescribe archivos existentes** - Verifica antes de crear
+2. **No borra contenido** - Solo añade enlaces internos
+3. **Scope limitado** - Solo opera en `content/` y `data/`
+4. **Nombres URL-friendly** - Validación automática de nombres
 
-**Ejecuciones posteriores:**
-1. Crear nuevos archivos `.md` → **Solicita permiso** (Comando 1)
-2. Modificar archivos existentes (enlaces) → **Solicita permiso** (Comando 3)
-3. Actualizar `progress.txt` → **Solicita permiso** (Comando 2)
-
-**Modo Sesión Completa (`run_loop.sh`):**
-```bash
-📋 Permisos requeridos para esta sesión:
-  • Crear directorio content/
-  • Crear N archivos markdown nuevos
-  • Modificar artículos existentes para enlaces internos
-  • Actualizar data/progress.txt
-
-¿Conceder permisos para toda la sesión? (s/n)
-```
-- Al conceder permisos al inicio, se ejecutan todos los comandos sin solicitudes individuales
-- Válido solo para la sesión actual
-
-📖 **Documentación completa con ejemplos:** `docs/permissions_system.md`
+📖 **Documentación completa:** `docs/permissions_system.md`
 
 ---
 
