@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./scripts/run_loop.sh:*)",
+      "Bash(./scripts/run_task.sh:*)",
+      "Bash(claude:*)",
+      "Bash(ralph_start:*)",
+      "Bash(git init:*)",
+      "Bash(git config:*)",
+      "Bash(git add:*)"
+    ]
+  },
+  "auto_approve": [
+    "git add .",
+    "git commit *",
+    "ls",
+    "cat *",
+    "grep *",
+    "write_file",
+    "bash *"
+  ]
+}
